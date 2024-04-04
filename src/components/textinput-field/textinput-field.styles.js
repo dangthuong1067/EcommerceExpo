@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 10,
     marginTop: 5,
+    paddingVertical:15
   },
   label: {
     fontSize: 18
