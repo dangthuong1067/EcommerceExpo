@@ -19,7 +19,6 @@ const Category = () => {
         keyExtractor={(item) => item.id}
         horizontal={false}
         numColumns={2}
-        style={{backgroundColor:'pink'}}
         contentContainerStyle={{ marginHorizontal: 10, gap: 10 }}
 
         renderItem={({ item, index }) => {

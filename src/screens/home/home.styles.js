@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: '500',
     color: 'black',
-    paddingBottom: 10
+    paddingBottom: 10,
+    paddingTop: 25
   },
   searchAndDrawer: {
     flexDirection: 'row',

@@ -12,6 +12,7 @@ const Profile = () => {
         dispatch(logoutThunk());
         dispatch(setStack("auth"));
       }}
+      style={{flex:1, justifyContent:"center",alignItems:'center'}}
     >
       <Text>Profile</Text>
     </TouchableOpacity>

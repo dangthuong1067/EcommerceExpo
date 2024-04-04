@@ -7,7 +7,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
     paddingHorizontal: 10,
-    backgroundColor: '#dddddd'
+    backgroundColor: '#dddddd',
+    paddingVertical: 10
   },
   search: {
     flex: 1

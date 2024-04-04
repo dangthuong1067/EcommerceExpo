@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: '500',
     color: 'black',
-    paddingBottom: 10
+    paddingBottom: 10,
+    paddingTop:25
   },
   search: {
     flexDirection: 'row',
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
   },
   itemCategory: {
     flex: 1,
-   backgroundColor:'red'
+   //backgroundColor:'red'
   }
 })
 
