@@ -7,8 +7,8 @@ const styles = StyleSheet.create({
     backgroundColor: backgroundColor, alignItems: 'center', borderRadius: 15,
     marginRight: index % 2 === 0 && index !== lastIndex ? 5 : 0,
     marginLeft: index % 2 !== 0 ? 5 : 0,
-    width: index === lastIndex && width / 2 - 15,
-    paddingVertical: 20
+    width: width / 2 - 15,
+    paddingVertical: 20,
   }),
   image: {
     width: 50,

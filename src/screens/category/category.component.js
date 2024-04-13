@@ -24,9 +24,6 @@ const Category = () => {
         renderItem={({ item, index }) => {
           const lastIndex = categoriesList.length - 1
           return (
-            <View
-              style={styles.itemCategory}
-            >
               <ItemCategories
                 categoryName={item.categoryName}
                 image={item.image}
@@ -34,7 +31,6 @@ const Category = () => {
                 lastIndex={lastIndex}
                 backgroundColor={item.background}
               />
-            </View>
           )
         }}
       />
