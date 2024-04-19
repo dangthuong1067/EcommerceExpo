@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: 'black',
     paddingBottom: 10,
-    paddingTop:25
+    paddingTop: 25
   },
   search: {
     flexDirection: 'row',
@@ -21,7 +21,16 @@ const styles = StyleSheet.create({
   },
   itemCategory: {
     flex: 1,
-   //backgroundColor:'red'
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  contentContainer: {
+    marginLeft: 10,
+    gap: 10,
+    paddingBottom:20
   }
 })
 
