@@ -3,6 +3,7 @@ import {
   createSlice,
   createAsyncThunk
 } from '@reduxjs/toolkit'
+import requestApi from '../../helpers/requestApi'
 
 const INIT_STATE = {
   token: null,
@@ -38,24 +39,19 @@ export const loginThunk = createAsyncThunk(
   'auth/loginThunk',
   async (data, thunkAPI) => {
     const { email, password } = data;
-    const response = await fetch(
-      `${process.env.EXPO_PUBLIC_HOST}/auth/login`,
+    const response = await requestApi.post(
+      `/auth/login`,
       {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email,
-          password
-        })
+        email,
+        password
       }
     )
-    if (!response.ok) {
-      return thunkAPI.rejectWithValue('Bạn nhập sai email hoặc mật khẩu. Vui lòng nhập lại!');
-    }
 
-    const { data: { token } } = await response.json();
+    // if (!response) {
+    //   return thunkAPI.rejectWithValue('Bạn nhập sai email hoặc mật khẩu. Vui lòng nhập lại!');
+    // }
+
+    const { token } = await response
     await AsyncStorage.setItem('token', token);
     return token
   }
@@ -66,28 +62,19 @@ export const signupThunk = createAsyncThunk(
   'auth/signupThunk',
   async (data, thunkAPI) => {
     const { username, email, password, confirmPassword, role } = data;
-    const response = await fetch(
-      `${process.env.EXPO_PUBLIC_HOST}/auth/signup`,
+    const response = await requestApi.post(
+      `/auth/signup`,
       {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-          confirmPassword,
-          role
-        })
+        username,
+        email,
+        password,
+        confirmPassword,
+        role
       }
     )
 
-    if (!response.ok) {
-      const { message } = await response.json();
-      if (message === "Duplicate Email. Please try again") {
-        return thunkAPI.rejectWithValue("Email này đã được dùng. Vui lòng tạo email khác!");
-      }
+    if (!response) {
+      return thunkAPI.rejectWithValue("Email này đã được dùng. Vui lòng tạo email khác!");
     }
   }
 )

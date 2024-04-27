@@ -33,7 +33,8 @@ const Login = ({ navigation }) => {
       dispatch(setStack("protected"))
       //dispatch(setStack("init"));
     } catch (error) {
-      Alert.alert('Error:', error.message)
+      console.log('error khi đăng nhập',error);
+      Alert.alert('Bạn nhập sai email hoặc mật khẩu. Vui lòng nhập lại!')
     }
   }
 
