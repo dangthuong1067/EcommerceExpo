@@ -3,7 +3,7 @@ import {
   createSlice,
   createAsyncThunk
 } from '@reduxjs/toolkit'
-import requestApi from '../../helpers/requestApi'
+import { instance } from '../../helpers/api'
 
 const INIT_STATE = {
   token: null,
@@ -39,19 +39,16 @@ export const loginThunk = createAsyncThunk(
   'auth/loginThunk',
   async (data, thunkAPI) => {
     const { email, password } = data;
-    const response = await requestApi.post(
-      `/auth/login`,
+    const response = await instance.post(
+      '/auth/login',
       {
         email,
         password
       }
-    )
+    );
 
-    // if (!response) {
-    //   return thunkAPI.rejectWithValue('Bạn nhập sai email hoặc mật khẩu. Vui lòng nhập lại!');
-    // }
+    const { data: { token } } = response.data;
 
-    const { token } = await response
     await AsyncStorage.setItem('token', token);
     return token
   }
@@ -62,7 +59,7 @@ export const signupThunk = createAsyncThunk(
   'auth/signupThunk',
   async (data, thunkAPI) => {
     const { username, email, password, confirmPassword, role } = data;
-    const response = await requestApi.post(
+    const response = await instance.post(
       `/auth/signup`,
       {
         username,
@@ -71,7 +68,7 @@ export const signupThunk = createAsyncThunk(
         confirmPassword,
         role
       }
-    )
+    );
 
     if (!response) {
       return thunkAPI.rejectWithValue("Email này đã được dùng. Vui lòng tạo email khác!");

@@ -2,8 +2,7 @@ import {
   createSlice,
   createAsyncThunk
 } from '@reduxjs/toolkit'
-import request from '../../helpers/request';
-import requestApi from '../../helpers/requestApi';
+import { instanceAuth } from '../../helpers/api';
 
 const INIT_STATE = {
   categoriesList: [],
@@ -17,27 +16,19 @@ const categoriesSlice = createSlice({
       .addCase(getCategoriesListThunk.fulfilled, (state, action) => {
         state.categoriesList = action.payload;
       })
-   
   }
 })
 
 export const getCategoriesListThunk = createAsyncThunk(
   'categories/getCategoriesListThunk',
   async (parameter, thunkAPI) => {
-    const response = await requestApi.get(
-      '/categoris/getCategoriesList',
-      {},
-      thunkAPI
-    )
-
+    const response = await instanceAuth.get('/categoris/getCategoriesList');
     if (response) {
-      const {categories} = response;
+      const { data: { categories } } = response.data;
       return categories;
     }
     return thunkAPI.rejectWithValue('Can not fetch data');
   }
 )
-
-
 
 export default categoriesSlice.reducer;

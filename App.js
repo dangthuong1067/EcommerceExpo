@@ -16,6 +16,10 @@ import Register from './src/screens/register/register.component';
 import ForgotPassword from './src/screens/forgot-password/forgot-password.component';
 import store from './src/redux/store';
 import SplashScreen from './src/screens/splash-screen/splashScreen.component';
+import { logoutThunk } from './src/redux/auth/auth.slice';
+import { inject } from './src/helpers/api';
+
+inject(store, logoutThunk);
 
 const Stack = createStackNavigator();
 const DrawerStack = createDrawerNavigator();

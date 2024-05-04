@@ -2,8 +2,7 @@ import {
   createSlice,
   createAsyncThunk
 } from '@reduxjs/toolkit'
-import request from '../../helpers/request'
-import requestApi from '../../helpers/requestApi'
+import { instanceAuth } from '../../helpers/api'
 
 const INIT_STATE = {
   banners: [],
@@ -29,41 +28,31 @@ const staticSlice = createSlice({
 export const getStaticDataThunk = createAsyncThunk(
   'home/getStaticDataThunk',
   async (parameter, thunkAPI) => {
-    const responseBanner = requestApi.get(
-      '/home/banners',
-      {},
-      thunkAPI
-    )
+    const responseBanner = instanceAuth.get('/home/banners');
 
-    const responseSaleProducts = requestApi.get(
+    const responseSaleProducts = instanceAuth.get(
       '/home/products',
       {
         tag: 'sale'
       },
-      thunkAPI
     )
 
-    const responsePoPularProducts = requestApi.get(
+    const responsePoPularProducts = instanceAuth.get(
       '/home/products',
       {
         tag: 'popular'
       },
-      thunkAPI
     )
 
-    const responseCategoriesList = requestApi.get(
-      '/home/categories',
-      {},
-      thunkAPI
-    )
+    const responseCategoriesList = instanceAuth.get('/home/categories',)
 
     const responseAll = await Promise.all([responseBanner, responseSaleProducts, responsePoPularProducts, responseCategoriesList])
 
     const processResponseAll = async () => {
-      const { banners } = responseAll[0];
-      const { products: saleProducts } = responseAll[1];
-      const { products: popularProduct } = responseAll[2];
-      const { categories } = responseAll[3];
+      const { data: { banners } } = responseAll[0].data;
+      const { data: { products: saleProducts } } = responseAll[1].data;
+      const { data: { products: popularProduct } } = responseAll[2].data;
+      const { data: { categories } } = responseAll[3].data;
 
       return {
         banners,
