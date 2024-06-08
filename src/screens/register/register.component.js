@@ -33,7 +33,7 @@ const Register = ({ navigation }) => {
       navigation.navigate("Login");
       Alert.alert("Đăng ký thành công");
     } catch (error) {
-      Alert.alert(error);
+      Alert.alert("Email này đã được dùng. Vui lòng tạo email khác!");
     }
   }
 

@@ -27,7 +27,7 @@ const staticSlice = createSlice({
 
 export const getStaticDataThunk = createAsyncThunk(
   'home/getStaticDataThunk',
-  async (parameter, thunkAPI) => {
+  async () => {
     const responseBanner = instanceAuth.get('/home/banners');
 
     const responseSaleProducts = instanceAuth.get(
@@ -64,7 +64,6 @@ export const getStaticDataThunk = createAsyncThunk(
 
     const result = await processResponseAll();
     if (result) return result
-    return thunkAPI.rejectWithValue('Can not fetch data');
   }
 )
 

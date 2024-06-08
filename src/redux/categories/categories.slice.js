@@ -21,13 +21,10 @@ const categoriesSlice = createSlice({
 
 export const getCategoriesListThunk = createAsyncThunk(
   'categories/getCategoriesListThunk',
-  async (parameter, thunkAPI) => {
+  async () => {
     const response = await instanceAuth.get('/categoris/getCategoriesList');
-    if (response) {
       const { data: { categories } } = response.data;
       return categories;
-    }
-    return thunkAPI.rejectWithValue('Can not fetch data');
   }
 )
 

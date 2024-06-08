@@ -37,7 +37,7 @@ export const getTokenThunk = createAsyncThunk(
 
 export const loginThunk = createAsyncThunk(
   'auth/loginThunk',
-  async (data, thunkAPI) => {
+  async (data) => {
     const { email, password } = data;
     const response = await instance.post(
       '/auth/login',
@@ -57,9 +57,9 @@ export const loginThunk = createAsyncThunk(
 
 export const signupThunk = createAsyncThunk(
   'auth/signupThunk',
-  async (data, thunkAPI) => {
+  async (data) => {
     const { username, email, password, confirmPassword, role } = data;
-    const response = await instance.post(
+    await instance.post(
       `/auth/signup`,
       {
         username,
@@ -69,10 +69,6 @@ export const signupThunk = createAsyncThunk(
         role
       }
     );
-
-    if (!response) {
-      return thunkAPI.rejectWithValue("Email này đã được dùng. Vui lòng tạo email khác!");
-    }
   }
 )
 export const logoutThunk = createAsyncThunk(
