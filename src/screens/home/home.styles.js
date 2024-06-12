@@ -78,7 +78,14 @@ const styles = StyleSheet.create({
   itemWithCategory: {
     marginTop: 10,
     marginBottom: 20
+  },
+  dotStyle:{
+    width: 8, height: 8, borderRadius: 4, backgroundColor: 'gray', margin: 5, top: -30
+  },
+  dotColor:{
+    backgroundColor: '#f5760e'
   }
+  
 
 })
 

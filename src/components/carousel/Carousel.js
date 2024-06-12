@@ -1,47 +1,35 @@
-import { View, Text, Dimensions, ScrollView, TouchableOpacity, Image } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import IMAGES from '../../images/images';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native';
 import styles from './carousel.styles';
 
-const Carousel = ({ data }) => {
+const Carousel = ({ data, autoScroll = true, dotStyle, activeDotStyle }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollViewRef = useRef(null);
   const screenWidth = Dimensions.get('window').width;
 
+  useEffect(() => {
+    let intervalId;
+
+    if (autoScroll) {
+      intervalId = setInterval(() => {
+        const nextIndex = (activeIndex + 1) % data.length;
+        setActiveIndex(nextIndex);
+        scrollToIndex(nextIndex);
+      }, 3000); 
+    }
+
+    return () => clearInterval(intervalId);
+  }, [activeIndex, data.length, autoScroll]);
+
+  const scrollToIndex = (index) => {
+    scrollViewRef.current?.scrollTo({ x: screenWidth * index, animated: true });
+  };
 
   const handleScroll = (event) => {
-    const slideWidth = screenWidth;
-    const newIndex = Math.round(event.nativeEvent.contentOffset.x / slideWidth);
+    const newIndex = Math.round(event.nativeEvent.contentOffset.x / screenWidth);
     setActiveIndex(newIndex);
   };
 
-  const renderItem = (item) => (
-    <View
-      key={item.id}
-      style={styles.item(screenWidth)}
-    >
-      <Image
-        source={{ uri: item.imageUrl }}
-        style={styles.image(screenWidth)}
-      />
-    </View>
-  );
-
-  const scrollToIndex = (index) => {
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollTo({ x: screenWidth * index, animated: true });
-    }
-  };
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const nextIndex = (activeIndex + 1) % data.length;
-      setActiveIndex(nextIndex);
-      scrollToIndex(nextIndex);
-    }, 4000);
-
-    return () => clearInterval(intervalId);
-  }, [activeIndex, data.length]);
   return (
     <View>
       <ScrollView
@@ -49,27 +37,33 @@ const Carousel = ({ data }) => {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        //  onScroll={handleScroll}
-        scrollEventThrottle={200}
+        onScroll={handleScroll}
+        scrollEventThrottle={16} 
       >
-        {data.map((item) => renderItem(item))}
+        {data.map((item, index) => (
+          <Image
+            key={index}
+            source={{ uri: item.imageUrl }}
+            style={styles.carouselImage}
+            resizeMode='contain'
+          />
+        ))}
       </ScrollView>
 
-      <View style={styles.dotButton}>
+      <View style={styles.dotContainer}>
         {data.map((_, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => {
-              setActiveIndex(index);
-              scrollToIndex(index);
-            }}
-            style={styles.itemDotButton(index, activeIndex)}
+            onPress={() => scrollToIndex(index)}
+            style={[
+              dotStyle, 
+              index === activeIndex && activeDotStyle, 
+            ]}
           />
         ))}
       </View>
     </View>
+  );
+};
 
-  )
-}
-
-export default Carousel
+export default Carousel;

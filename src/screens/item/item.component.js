@@ -2,6 +2,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React, { memo, useState } from 'react';
 import { formatCurrency } from '../../helpers/Utils';
 import styles from './item.styles';
+import { useNavigation } from '@react-navigation/native';
 const Item = ({ item }) => {
   const [indexSelected, setIndexSelected] = useState(0);
 
@@ -9,8 +10,17 @@ const Item = ({ item }) => {
     const discount = ((price - reducedPrice) / price) * 100;
     return discount;
   }
+
+  const navigation = useNavigation()
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('ProductDetail', {
+        product: item.items[indexSelected],
+        productName : item.name,
+        capacities: item.items,
+        imageSliders: item.imageSliders
+      })}
+      style={styles.container}>
       <Image source={{ uri: item.items[indexSelected].image }} style={styles.image} resizeMode="contain" />
       {item.items[indexSelected].reducedPrice &&
         <View style={styles.discount}>
@@ -46,7 +56,7 @@ const Item = ({ item }) => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

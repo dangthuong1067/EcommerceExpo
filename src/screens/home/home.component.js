@@ -51,7 +51,12 @@ const Home = ({ navigation }) => {
         }
       >
         <View style={styles.carousel}>
-          <Carousel data={banners} />
+          <Carousel
+            data={banners}
+            autoScroll={true}
+            dotStyle={styles.dotStyle}
+            activeDotStyle={styles.dotColor}
+          />
         </View>
 
         <View style={styles.preferentialProducts}>

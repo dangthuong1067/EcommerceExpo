@@ -18,6 +18,8 @@ import store from './src/redux/store';
 import SplashScreen from './src/screens/splash-screen/splashScreen.component';
 import { logoutThunk } from './src/redux/auth/auth.slice';
 import { inject } from './src/helpers/api';
+import ProductDetail from './src/screens/product-detail/product-detail.component';
+import ChoosePhoneAttributes from './src/screens/choose-phone-attributes/choose-phone-attributes.component';
 
 inject(store, logoutThunk);
 
@@ -31,6 +33,8 @@ function AppDrawerStack() {
       screenOptions={{ headerShown: false, swipeEnabled: false }}
       drawerContent={props => <DrawerView {...props} />}>
       <DrawerStack.Screen name='AppBottomStack' component={AppBottomStack} />
+      <DrawerStack.Screen name='ProductDetail' component={ProductDetail} />
+      <DrawerStack.Screen name='ChoosePhoneAttributes' component={ChoosePhoneAttributes} />
     </DrawerStack.Navigator>
   )
 }
