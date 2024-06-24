@@ -3,10 +3,12 @@ import { Alert } from 'react-native';
 
 let store;
 let logoutThunk;
+let setStack;
 
-export const inject = (_store,_thunk) => {
+export const inject = (_store,_thunk,_stack) => {
   store = _store
   logoutThunk = _thunk;
+  setStack = _stack
 }
 
 export const instance = axios.create({
@@ -41,6 +43,7 @@ instanceAuth.interceptors.response.use(
   if (status === 401 || status === 403) {
     Alert.alert('Vui lòng đăng nhập lại!');
     store.dispatch(logoutThunk());
+    store.dispatch(setStack("auth"))
   }
   return Promise.reject(error);
 });

@@ -20,8 +20,9 @@ import { logoutThunk } from './src/redux/auth/auth.slice';
 import { inject } from './src/helpers/api';
 import ProductDetail from './src/screens/product-detail/product-detail.component';
 import ChoosePhoneAttributes from './src/screens/choose-phone-attributes/choose-phone-attributes.component';
+import { setStack } from './src/redux/app/app.slice';
 
-inject(store, logoutThunk);
+inject(store, logoutThunk, setStack);
 
 const Stack = createStackNavigator();
 const DrawerStack = createDrawerNavigator();
