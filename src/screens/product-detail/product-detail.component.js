@@ -86,8 +86,8 @@ const ProductDetail = ({ route, navigation }) => {
       </View>
       <Text>{item.comment}</Text>
       <View style={styles.reviewImages}>
-        {item.reviewPhoto.map((photo) => (
-          <View style={styles.reviewImageContainer}>
+        {item.reviewPhoto.map((photo, index) => (
+          <View key={index} style={styles.reviewImageContainer}>
             <Image source={{ uri: photo.imageUrl }} style={styles.reviewImage} />
           </View>
         ))}
@@ -95,101 +95,105 @@ const ProductDetail = ({ route, navigation }) => {
     </View>
   );
 
-  return (
-    <>
-      <Header
-        title={'Chi tiết sản phẩm'}
+  const renderProductDetails = () => (
+    <View>
+      <Carousel
+        data={imageSliders}
+        autoScroll={false}
+        dotStyle={styles.carouselDot}
+        activeDotStyle={styles.carouselActiveDot}
       />
-      <ScrollView style={styles.container}>
-        <View >
-          <Carousel
-            data={imageSliders}
-            autoScroll={false}
-            dotStyle={styles.carouselDot}
-            activeDotStyle={styles.carouselActiveDot}
-          />
+
+      <View style={styles.productInfo}>
+        <View style={styles.productNameContainer}>
+          <Text style={styles.productName}>{productName}</Text>
+          <TouchableOpacity >
+            <Icon name="heart-outline" size={24} color="red" />
+          </TouchableOpacity>
         </View>
 
-        <View style={styles.productInfo}>
-          <View style={styles.productNameContainer}>
-            <Text style={styles.productName}>{productName}</Text>
-            <TouchableOpacity >
-              <Icon name="heart-outline" size={24} color="red" />
+        <View style={styles.quantityContainer}>
+          <View style={styles.quantityContainer}>
+            <TouchableOpacity
+              onPress={handleIncreaseQuantity}
+              style={styles.addCart}>
+              <Text style={styles.textAdd}>+</Text>
+            </TouchableOpacity>
+            <Text style={styles.quantityText}>{quantity}</Text>
+            <TouchableOpacity
+              onPress={handleDecreaseQuantity}
+              style={styles.addCart}>
+              <Text style={styles.textAdd}>-</Text>
             </TouchableOpacity>
           </View>
 
-          <View style={styles.quantityContainer}>
-            <View style={styles.quantityContainer}>
-              <TouchableOpacity
-                onPress={handleIncreaseQuantity}
-                style={styles.addCart}>
-                <Text style={styles.textAdd}>+</Text>
-              </TouchableOpacity>
-              <Text style={styles.quantityText}>{quantity}</Text>
-              <TouchableOpacity
-                onPress={handleDecreaseQuantity}
-                style={styles.addCart}>
-                <Text style={styles.textAdd}>-</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.priceContainer}>
-              <Text style={styles.originalPrice}>{formatCurrency(product.price)}</Text>
-              <Text style={styles.discountedPrice}>{formatCurrency(product.reducedPrice)}</Text>
-            </View>
+          <View style={styles.priceContainer}>
+            <Text style={styles.originalPrice}>{formatCurrency(product.price)}</Text>
+            <Text style={styles.discountedPrice}>{formatCurrency(product.reducedPrice)}</Text>
           </View>
+        </View>
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ChoosePhoneAttributes', {
-              product: product,
-              productName: productName,
-              capacities: capacities
-            })}
-            style={styles.productAttributesButton}>
-            <View style={styles.productAttributesImageContainer}>
-              <Image source={{ uri: product.image }} style={styles.productAttributesImage} />
-            </View>
-            <View style={styles.productAttributesTextContainer}>
-              <Text>Màu sắc, Dung lượng</Text>
-              <Text style={styles.productAttributesCapacityText}>{`${product.colors[0]}, ${product.capacity}`}</Text>
-            </View>
-            <Text style={styles.productAttributesSelectText}>Chọn</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ChoosePhoneAttributes', {
+            product: product,
+            productName: productName,
+            capacities: capacities
+          })}
+          style={styles.productAttributesButton}>
+          <View style={styles.productAttributesImageContainer}>
+            <Image source={{ uri: product.image }} style={styles.productAttributesImage} />
+          </View>
+          <View style={styles.productAttributesTextContainer}>
+            <Text>Màu sắc, Dung lượng</Text>
+            <Text style={styles.productAttributesCapacityText}>{`${product.colors[0]}, ${product.capacity}`}</Text>
+          </View>
+          <Text style={styles.productAttributesSelectText}>Chọn</Text>
+        </TouchableOpacity>
+
+        <View style={styles.productDetailsSection}>
+          <Text style={styles.textProductDetails}>Chi tiết sản phẩm</Text>
+          <TouchableOpacity>
+            <Icon name="chevron-down" size={24} color="gray" />
           </TouchableOpacity>
+        </View>
 
-          <View style={styles.productDetailsSection}>
-            <Text style={styles.textProductDetails}>Chi tiết sản phẩm</Text>
+        <View>
+          <View style={styles.customerReviewsSection}>
+            <Text style={styles.textProductDetails}>Đánh giá của khách hàng</Text>
+            <Text>4.5/5</Text>
+            <View style={styles.ratingMargin}>
+              <Rating
+                type="custom"
+                ratingCount={5}
+                imageSize={20}
+                startingValue={1}
+                readonly
+                style={styles.rating}
+              />
+            </View>
             <TouchableOpacity>
               <Icon name="chevron-down" size={24} color="gray" />
             </TouchableOpacity>
           </View>
 
-          <View>
-            <View style={styles.customerReviewsSection}>
-              <Text style={styles.textProductDetails}>Đánh giá của khách hàng</Text>
-              <Text>4.5/5</Text>
-              <View style={styles.ratingMargin}>
-                <Rating
-                  type="custom"
-                  ratingCount={5}
-                  imageSize={20}
-                  startingValue={1}
-                  readonly
-                  style={styles.rating}
-                />
-              </View>
-              <TouchableOpacity>
-                <Icon name="chevron-down" size={24} color="gray" />
-              </TouchableOpacity>
-            </View>
 
-            <FlatList
-              data={customerList}
-              keyExtractor={(item) => item.customerId}
-              renderItem={renderItemReview}
-            />
-          </View>
         </View>
-      </ScrollView>
+      </View>
+    </View>
+  )
+  
+  return (
+    <>
+      <Header
+        title={'Chi tiết sản phẩm'}
+      />
+      <FlatList
+        data={customerList}
+        keyExtractor={(item) => item.customerId}
+        renderItem={renderItemReview}
+        ListHeaderComponent={renderProductDetails}
+        style={styles.container}
+      />
 
       <View style={styles.bottomButtons}>
         <TouchableOpacity style={styles.button}>

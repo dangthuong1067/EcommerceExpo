@@ -84,7 +84,8 @@ const styles = StyleSheet.create({
   },
 
   reviewItem: {
-    marginBottom: 20
+    marginBottom: 20,
+    paddingHorizontal:20
   },
 
   customerInfo: {
