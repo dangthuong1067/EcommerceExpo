@@ -34,8 +34,7 @@ function AppDrawerStack() {
       screenOptions={{ headerShown: false, swipeEnabled: false }}
       drawerContent={props => <DrawerView {...props} />}>
       <DrawerStack.Screen name='AppBottomStack' component={AppBottomStack} />
-      <DrawerStack.Screen name='ProductDetail' component={ProductDetail} />
-      <DrawerStack.Screen name='ChoosePhoneAttributes' component={ChoosePhoneAttributes} />
+      <DrawerStack.Screen name='HomeStackNavigator' component={HomeStackNavigator} />
     </DrawerStack.Navigator>
   )
 }
@@ -47,6 +46,13 @@ function DrawerView() {
     </View>
   )
 }
+
+const HomeStackNavigator = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name='ProductDetail' component={ProductDetail} />
+    <Stack.Screen name='ChoosePhoneAttributes' component={ChoosePhoneAttributes} />
+  </Stack.Navigator>
+)
 
 function AppBottomStack() {
   return (

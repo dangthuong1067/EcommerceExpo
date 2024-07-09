@@ -14,11 +14,14 @@ const Item = ({ item }) => {
   const navigation = useNavigation()
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('ProductDetail', {
-        product: item.items[indexSelected],
-        productName : item.name,
-        capacities: item.items,
-        imageSliders: item.imageSliders
+      onPress={() => navigation.navigate('HomeStackNavigator', {
+        screen: 'ProductDetail',
+        params: {
+          product: item.items[indexSelected],
+          productName: item.name,
+          capacities: item.items,
+          imageSliders: item.imageSliders
+        },
       })}
       style={styles.container}>
       <Image source={{ uri: item.items[indexSelected].image }} style={styles.image} resizeMode="contain" />
