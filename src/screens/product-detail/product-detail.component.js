@@ -19,6 +19,7 @@ import Carousel from '../../components/carousel/Carousel';
 import { formatCurrency } from '../../helpers/Utils';
 import PrimaryButton from '../../components/primary-button/primary-button.component';
 import styles from './product-detail.styles';
+import CounterButton from '../../components/counterButton/counter-button.component';
 
 const customerList = [
   {
@@ -113,20 +114,10 @@ const ProductDetail = ({ route, navigation }) => {
         </View>
 
         <View style={styles.quantityContainer}>
-          <View style={styles.quantityContainer}>
-            <TouchableOpacity
-              onPress={handleIncreaseQuantity}
-              style={styles.addCart}>
-              <Text style={styles.textAdd}>+</Text>
-            </TouchableOpacity>
-            <Text style={styles.quantityText}>{quantity}</Text>
-            <TouchableOpacity
-              onPress={handleDecreaseQuantity}
-              style={styles.addCart}>
-              <Text style={styles.textAdd}>-</Text>
-            </TouchableOpacity>
-          </View>
-
+          <CounterButton
+             style={styles.counterButton}
+          />
+          
           <View style={styles.priceContainer}>
             <Text style={styles.originalPrice}>{formatCurrency(product.price)}</Text>
             <Text style={styles.discountedPrice}>{formatCurrency(product.reducedPrice)}</Text>

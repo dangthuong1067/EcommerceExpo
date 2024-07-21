@@ -22,7 +22,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     elevation: 5,
     borderRadius: 31,
-  }
+  },
+  quantity: {
+    color: 'white', fontWeight: 'bold', fontSize: 18
+  },
+  totalPrice: {
+    position: 'absolute',
+    right: 20
+  },
+  textTotalPrice: {
+    fontWeight: 'bold',
+    color: 'black',
+    fontSize: 18
+  },
+  hasCartScreen: (isCartScreen) => ({
+    flexDirection: isCartScreen && 'row', alignItems: 'center', justifyContent: 'center'
+  })
 });
 
 export default styles;

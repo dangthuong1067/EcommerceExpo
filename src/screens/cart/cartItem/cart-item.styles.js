@@ -1,10 +1,6 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
   item: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -17,6 +13,8 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     marginRight: 20,
+    justifyContent:'center',
+    alignItems:'flex-end'
   },
   info: {
     flex: 1,
@@ -29,7 +27,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 14,
     color: '#555',
-    marginBottom: 10
+    marginBottom:10
   },
   quantityContainer: {
     flexDirection: 'row',
@@ -55,8 +53,18 @@ const styles = StyleSheet.create({
   },
   primaryButton:
   {
-    padding: 7,
+     padding: 7,
   },
+  contentRight:{
+    alignItems: 'flex-end'
+  },
+  xMark:{
+    marginBottom:5
+  },
+  cost:{
+    textDecorationLine: 'line-through',
+    marginBottom:5 
+  }
 })
 
 export default styles

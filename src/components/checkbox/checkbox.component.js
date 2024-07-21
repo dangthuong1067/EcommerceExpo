@@ -3,10 +3,11 @@ import React, { useState } from 'react'
 import styles from './checkbox.styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const CheckBox = ({ label, isCheck, onPress }) => {
+const CheckBox = ({ label }) => {
+  const [isCheck, setIsCheck] = useState(false)
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={() => setIsCheck(!isCheck)}
       style={styles.container}
     >
       <View style={styles.circle}>

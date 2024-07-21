@@ -226,6 +226,9 @@ const styles = StyleSheet.create({
     borderBottomColor: 'gray',
     borderBottomWidth: 0.5
   },
+  counterButton:{
+    marginRight:30
+  }
 
 });
 
