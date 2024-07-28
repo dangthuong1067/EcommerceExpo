@@ -17,15 +17,15 @@ const CounterButton = ({ style }) => {
   return (
     <View style={[styles.quantityContainer, style]}>
       <TouchableOpacity
-        onPress={handleIncreaseQuantity}
-        style={styles.addCart}>
-        <Text style={styles.textAdd}>+</Text>
-      </TouchableOpacity>
-      <Text style={styles.quantityText}>{quantity}</Text>
-      <TouchableOpacity
         onPress={handleDecreaseQuantity}
         style={styles.addCart}>
         <Text style={styles.textAdd}>-</Text>
+      </TouchableOpacity>
+      <Text style={styles.quantityText}>{quantity}</Text>
+      <TouchableOpacity
+        onPress={handleIncreaseQuantity}
+        style={styles.addCart}>
+        <Text style={styles.textAdd}>+</Text>
       </TouchableOpacity>
     </View>
   )

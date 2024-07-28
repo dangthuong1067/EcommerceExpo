@@ -99,7 +99,9 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderColor: 'black',
     backgroundColor: '#00CC33',
-    marginRight: 5
+    marginRight: 5,
+    justifyContent:'center',
+    alignItems:'center'
   },
 
   ratingContainer: {
@@ -228,6 +230,10 @@ const styles = StyleSheet.create({
   },
   counterButton:{
     marginRight:30
+  },
+  textInAvatar:{
+    fontWeight:'bold',
+    color:'white'
   }
 
 });

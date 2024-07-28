@@ -1,3 +1,4 @@
+import React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -21,6 +22,7 @@ import { inject } from './src/helpers/api';
 import ProductDetail from './src/screens/product-detail/product-detail.component';
 import ChoosePhoneAttributes from './src/screens/choose-phone-attributes/choose-phone-attributes.component';
 import { setStack } from './src/redux/app/app.slice';
+import Toast from 'react-native-toast-message';
 
 inject(store, logoutThunk, setStack);
 
@@ -133,6 +135,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       {rendering}
+      <Toast  />
     </NavigationContainer>
   );
 };

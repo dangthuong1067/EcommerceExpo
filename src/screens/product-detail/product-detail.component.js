@@ -20,6 +20,7 @@ import { formatCurrency } from '../../helpers/Utils';
 import PrimaryButton from '../../components/primary-button/primary-button.component';
 import styles from './product-detail.styles';
 import CounterButton from '../../components/counterButton/counter-button.component';
+import Toast from 'react-native-toast-message';
 
 const customerList = [
   {
@@ -68,11 +69,17 @@ const ProductDetail = ({ route, navigation }) => {
       setQuantity(quantity - 1);
     }
   };
-
-  const renderItemReview = ({ item }) => (
-    <View style={styles.reviewItem}>
+ 
+  const renderItemReview = ({ item }) => {
+    const nameParts = item.customerName.split(' '); 
+    const firstName = nameParts[nameParts.length - 1]; 
+    const firstCharacter = firstName.charAt(0); 
+    return (
+      <View style={styles.reviewItem}>
       <View style={styles.customerInfo}>
-        <View style={styles.avatar} />
+        <View style={styles.avatar}>
+          <Text style={styles.textInAvatar}>{firstCharacter}</Text>
+        </View>
         <Text>{item.customerName}</Text>
       </View>
       <View style={styles.ratingContainer}>
@@ -94,7 +101,8 @@ const ProductDetail = ({ route, navigation }) => {
         ))}
       </View>
     </View>
-  );
+    )
+  };
 
   const renderProductDetails = () => (
     <View>
@@ -173,6 +181,13 @@ const ProductDetail = ({ route, navigation }) => {
     </View>
   )
   
+  const addToCart = () =>{
+    Toast.show({
+      type: 'success',
+      text1: 'Thành công',
+      text2: 'Sản phẩm đã được thêm vào giỏ hàng',
+    });
+  }
   return (
     <>
       <Header
@@ -195,7 +210,7 @@ const ProductDetail = ({ route, navigation }) => {
         </TouchableOpacity>
 
         <PrimaryButton
-          onPress={() => console.log('vào')}
+          onPress={addToCart}
           style={styles.primaryButton}
         >
           Thêm vào giỏ hàng

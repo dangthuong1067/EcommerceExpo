@@ -9,7 +9,11 @@ const Header = ({ title }) => {
 
   return (
     <SafeAreaView style={styles.headerContainer}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.backButton}
+        hitSlop={50}
+      >
         <Icon name="chevron-back-outline" size={24} color="#000" />
       </TouchableOpacity>
       <View style={styles.titleContainer}>
