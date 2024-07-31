@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -20,7 +20,8 @@ import { formatCurrency } from '../../helpers/Utils';
 import PrimaryButton from '../../components/primary-button/primary-button.component';
 import styles from './product-detail.styles';
 import CounterButton from '../../components/counterButton/counter-button.component';
-import Toast from 'react-native-toast-message';
+import Toast, { BaseToast } from 'react-native-toast-message';
+import { useFocusEffect } from '@react-navigation/native';
 
 const customerList = [
   {
@@ -56,9 +57,37 @@ const customerList = [
   }
 ]
 
+export const toastConfig = {
+  success: ({ text1, text2, ...rest }) => (
+    <BaseToast
+      {...rest}
+      style={{ borderLeftColor: 'green' }}
+      contentContainerStyle={{ paddingHorizontal: 15 }}
+      text1Style={{
+        fontSize: 15, 
+        fontWeight: 'bold'
+      }}
+      text2Style={{
+        fontSize: 15 
+      }}
+      text1={text1}
+      text2={text2}
+    />
+  )
+};
 const ProductDetail = ({ route, navigation }) => {
   const { product, productName, capacities, imageSliders } = route.params;
   const [quantity, setQuantity] = useState(1);
+
+  const flatListRef = useRef(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (flatListRef.current) {
+        flatListRef.current.scrollToOffset({  offset: 0 });
+      }
+    }, [])
+  );
 
   const handleIncreaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -199,6 +228,7 @@ const ProductDetail = ({ route, navigation }) => {
         renderItem={renderItemReview}
         ListHeaderComponent={renderProductDetails}
         style={styles.container}
+        ref={flatListRef}
       />
 
       <View style={styles.bottomButtons}>

@@ -109,7 +109,8 @@ const styles = StyleSheet.create({
   },
 
   reviewImages: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginTop:5
   },
 
   reviewImageContainer: {

@@ -19,7 +19,7 @@ import store from './src/redux/store';
 import SplashScreen from './src/screens/splash-screen/splashScreen.component';
 import { logoutThunk } from './src/redux/auth/auth.slice';
 import { inject } from './src/helpers/api';
-import ProductDetail from './src/screens/product-detail/product-detail.component';
+import ProductDetail, { toastConfig } from './src/screens/product-detail/product-detail.component';
 import ChoosePhoneAttributes from './src/screens/choose-phone-attributes/choose-phone-attributes.component';
 import { setStack } from './src/redux/app/app.slice';
 import Toast from 'react-native-toast-message';
@@ -135,7 +135,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       {rendering}
-      <Toast  />
+      <Toast config={toastConfig} />
     </NavigationContainer>
   );
 };
