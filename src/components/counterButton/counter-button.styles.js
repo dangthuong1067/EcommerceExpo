@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
   },
   quantityText: {
     fontSize: 18,
-    marginHorizontal: 10,
+    width: 33,
+    textAlign: 'center'
   },
 });
 

@@ -64,11 +64,11 @@ export const toastConfig = {
       style={{ borderLeftColor: 'green' }}
       contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
-        fontSize: 15, 
+        fontSize: 15,
         fontWeight: 'bold'
       }}
       text2Style={{
-        fontSize: 15 
+        fontSize: 15
       }}
       text1={text1}
       text2={text2}
@@ -78,13 +78,15 @@ export const toastConfig = {
 const ProductDetail = ({ route, navigation }) => {
   const { product, productName, capacities, imageSliders } = route.params;
   const [quantity, setQuantity] = useState(1);
+  const [isShowReview, setIsShowReview] = useState(false);
+  const [isShowProductDetail, setIsShowProductDetail] = useState(false);
 
   const flatListRef = useRef(null);
 
   useFocusEffect(
     useCallback(() => {
       if (flatListRef.current) {
-        flatListRef.current.scrollToOffset({  offset: 0 });
+        flatListRef.current.scrollToOffset({ offset: 0 });
       }
     }, [])
   );
@@ -98,38 +100,38 @@ const ProductDetail = ({ route, navigation }) => {
       setQuantity(quantity - 1);
     }
   };
- 
+
   const renderItemReview = ({ item }) => {
-    const nameParts = item.customerName.split(' '); 
-    const firstName = nameParts[nameParts.length - 1]; 
-    const firstCharacter = firstName.charAt(0); 
+    const nameParts = item.customerName.split(' ');
+    const firstName = nameParts[nameParts.length - 1];
+    const firstCharacter = firstName.charAt(0);
     return (
-      <View style={styles.reviewItem}>
-      <View style={styles.customerInfo}>
-        <View style={styles.avatar}>
-          <Text style={styles.textInAvatar}>{firstCharacter}</Text>
-        </View>
-        <Text>{item.customerName}</Text>
-      </View>
-      <View style={styles.ratingContainer}>
-        <Rating
-          type="custom"
-          ratingCount={5}
-          imageSize={15}
-          startingValue={item.rating}
-          readonly
-          style={styles.rating}
-        />
-      </View>
-      <Text>{item.comment}</Text>
-      <View style={styles.reviewImages}>
-        {item.reviewPhoto.map((photo, index) => (
-          <View key={index} style={styles.reviewImageContainer}>
-            <Image source={{ uri: photo.imageUrl }} style={styles.reviewImage} />
+      isShowReview && <View style={styles.reviewItem}>
+        <View style={styles.customerInfo}>
+          <View style={styles.avatar}>
+            <Text style={styles.textInAvatar}>{firstCharacter}</Text>
           </View>
-        ))}
+          <Text>{item.customerName}</Text>
+        </View>
+        <View style={styles.ratingContainer}>
+          <Rating
+            type="custom"
+            ratingCount={5}
+            imageSize={15}
+            startingValue={item.rating}
+            readonly
+            style={styles.rating}
+          />
+        </View>
+        <Text>{item.comment}</Text>
+        <View style={styles.reviewImages}>
+          {item.reviewPhoto.map((photo, index) => (
+            <View key={index} style={styles.reviewImageContainer}>
+              <Image source={{ uri: photo.imageUrl }} style={styles.reviewImage} />
+            </View>
+          ))}
+        </View>
       </View>
-    </View>
     )
   };
 
@@ -152,9 +154,9 @@ const ProductDetail = ({ route, navigation }) => {
 
         <View style={styles.quantityContainer}>
           <CounterButton
-             style={styles.counterButton}
+            style={styles.counterButton}
           />
-          
+
           <View style={styles.priceContainer}>
             <Text style={styles.originalPrice}>{formatCurrency(product.price)}</Text>
             <Text style={styles.discountedPrice}>{formatCurrency(product.reducedPrice)}</Text>
@@ -180,8 +182,8 @@ const ProductDetail = ({ route, navigation }) => {
 
         <View style={styles.productDetailsSection}>
           <Text style={styles.textProductDetails}>Chi tiết sản phẩm</Text>
-          <TouchableOpacity>
-            <Icon name="chevron-down" size={24} color="gray" />
+          <TouchableOpacity onPress={() => setIsShowProductDetail(!isShowProductDetail)}>
+            {isShowProductDetail ? <Icon name="chevron-down" size={24} color="gray" /> : <Icon name="chevron-forward-outline" size={24} color="gray" />}
           </TouchableOpacity>
         </View>
 
@@ -199,8 +201,8 @@ const ProductDetail = ({ route, navigation }) => {
                 style={styles.rating}
               />
             </View>
-            <TouchableOpacity>
-              <Icon name="chevron-down" size={24} color="gray" />
+            <TouchableOpacity onPress={() => setIsShowReview(!isShowReview)}>
+              {isShowReview ? <Icon name="chevron-down" size={24} color="gray" /> : <Icon name="chevron-forward-outline" size={24} color="gray" />}
             </TouchableOpacity>
           </View>
 
@@ -209,8 +211,8 @@ const ProductDetail = ({ route, navigation }) => {
       </View>
     </View>
   )
-  
-  const addToCart = () =>{
+
+  const addToCart = () => {
     Toast.show({
       type: 'success',
       text1: 'Thành công',
