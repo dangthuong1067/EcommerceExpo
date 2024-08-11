@@ -76,7 +76,7 @@ export const toastConfig = {
   )
 };
 const ProductDetail = ({ route, navigation }) => {
-  const { product, productName, capacities, imageSliders } = route.params;
+  const { product, productName, capacities, imageSliders, productList } = route.params;
   const [quantity, setQuantity] = useState(1);
   const [isShowReview, setIsShowReview] = useState(false);
   const [isShowProductDetail, setIsShowProductDetail] = useState(false);
@@ -167,7 +167,8 @@ const ProductDetail = ({ route, navigation }) => {
           onPress={() => navigation.navigate('ChoosePhoneAttributes', {
             product: product,
             productName: productName,
-            capacities: capacities
+            capacities: capacities,
+            productList: productList
           })}
           style={styles.productAttributesButton}>
           <View style={styles.productAttributesImageContainer}>
@@ -175,7 +176,7 @@ const ProductDetail = ({ route, navigation }) => {
           </View>
           <View style={styles.productAttributesTextContainer}>
             <Text>Màu sắc, Dung lượng</Text>
-            <Text style={styles.productAttributesCapacityText}>{`${product.colors[0]}, ${product.capacity}`}</Text>
+            <Text style={styles.productAttributesCapacityText}>{`${product.colors.map(item => item.color)[0]}, ${product.capacity}`}</Text>
           </View>
           <Text style={styles.productAttributesSelectText}>Chọn</Text>
         </TouchableOpacity>

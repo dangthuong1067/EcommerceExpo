@@ -20,7 +20,8 @@ const Item = ({ item }) => {
           product: item.items[indexSelected],
           productName: item.name,
           capacities: item.items,
-          imageSliders: item.imageSliders
+          imageSliders: item.imageSliders,
+          productList: item.items
         },
       })}
       style={styles.container}>

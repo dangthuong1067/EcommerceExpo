@@ -1,24 +1,41 @@
-import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import React, { useState } from 'react'
 import Header from '../../components/header/Header.component'
 import PrimaryButton from '../../components/primary-button/primary-button.component';
 import { formatCurrency } from '../../helpers/Utils';
 import styles from './choose-phone-attributes.styles';
 
-const ChoosePhoneAttributes = ({ route }) => {
-  const { product, productName, capacities } = route.params;
-  const [indexSelectedCapacity, setIndexSelectedCapacity] = useState(0);
-  const capacityText = capacities[indexSelectedCapacity].capacity
+const ChoosePhoneAttributes = ({ route, navigation }) => {
+  const { product, productName, capacities, productList } = route.params;
 
+  const [indexSelectedCapacity, setIndexSelectedCapacity] = useState(undefined);
+  const [indexSelectedColor, setIndexSelectedColor] = useState(undefined);
+  const capacityText = capacities[indexSelectedCapacity]?.capacity
+
+  const [colorText, setColorText] = useState(undefined);
+  const productPrice = productList.find(item => item.capacity === capacityText)?.colors.find(item => item.color === colorText).price
+
+  const handleSelect = () => {
+    if (!colorText) return Alert.alert('Vui lòng chọn màu sắc')
+    if (!capacityText) return Alert.alert('Vui lòng chọn dung lượng')
+
+    navigation.navigate('ProductDetail', {
+      // colorText: colorText,
+      // capacityText: capacityText
+    })
+  }
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
-      onPress={() => setIndexSelectedCapacity(index)}
-      style={styles.color(index, indexSelectedCapacity)}
+      onPress={() => {
+        setIndexSelectedColor(index)
+        setColorText(item.color)
+      }}
+      style={styles.color(index, indexSelectedColor)}
     >
       <View style={styles.colorImageContainer}>
         <Image source={{ uri: product.image }} style={styles.productImage} />
       </View>
-      <Text style={styles.colorText}>{item}</Text>
+      <Text style={styles.colorText}>{item.color}</Text>
     </TouchableOpacity>
 
   )
@@ -36,14 +53,14 @@ const ChoosePhoneAttributes = ({ route }) => {
 
             <View>
               <Text style={styles.productName}>{productName}</Text>
-              <Text>Màu sắc: <Text style={styles.selectedColor}>Trắng/ 64GB</Text></Text>
-              <Text style={styles.discountedPrice}>{formatCurrency(product.reducedPrice)}</Text>
+              {colorText && capacityText && <Text>Màu sắc: <Text style={styles.selectedColor}>{`${colorText} / ${capacityText}`}</Text></Text>}
+              <Text style={styles.discountedPrice}>{formatCurrency(productPrice)}</Text>
             </View>
           </View>
         </View>
 
         <View style={styles.attributeSelectionContainer}>
-          <Text style={styles.attributeLabel}>Màu sắc: <Text style={styles.selectedAttribute}>{capacities[0].colors[0]}</Text></Text>
+          <Text style={styles.attributeLabel}>Màu sắc: <Text style={styles.selectedAttribute}>{colorText}</Text></Text>
           <View style={styles.colorList}>
             <FlatList
               data={product.colors}
@@ -62,7 +79,9 @@ const ChoosePhoneAttributes = ({ route }) => {
                   style={styles.capacity(index, indexSelectedCapacity)}
                   key={index}
                 >
-                  <Text style={styles.capacityText(index, indexSelectedCapacity)}>{item.capacity}</Text>
+                  <Text
+                    style={styles.capacityText(index, indexSelectedCapacity)}
+                  >{item.capacity}</Text>
                 </TouchableOpacity>
               )
             }
@@ -72,7 +91,7 @@ const ChoosePhoneAttributes = ({ route }) => {
       </View>
 
       <PrimaryButton
-        onPress={() => { }}
+        onPress={handleSelect}
         style={styles.primaryButton}
       >
         Chọn
