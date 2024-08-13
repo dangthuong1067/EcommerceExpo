@@ -19,10 +19,15 @@ const ChoosePhoneAttributes = ({ route, navigation }) => {
     if (!colorText) return Alert.alert('Vui lòng chọn màu sắc')
     if (!capacityText) return Alert.alert('Vui lòng chọn dung lượng')
 
-    navigation.navigate('ProductDetail', {
-      // colorText: colorText,
-      // capacityText: capacityText
-    })
+    navigation.navigate({
+      name: 'ProductDetail',
+      params: { 
+        colorText: colorText ,
+        capacityText: capacityText,
+        productPrice: productPrice
+      },
+      merge: true,
+    });
   }
   const renderItem = ({ item, index }) => (
     <TouchableOpacity

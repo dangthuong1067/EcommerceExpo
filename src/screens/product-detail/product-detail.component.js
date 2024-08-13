@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -81,6 +81,10 @@ const ProductDetail = ({ route, navigation }) => {
   const [isShowReview, setIsShowReview] = useState(false);
   const [isShowProductDetail, setIsShowProductDetail] = useState(false);
 
+  const [capacityText, setCapacityText] = useState();
+  const [colorText, setColorText] = useState();
+  const [productPrice, setProductPrice] = useState();
+
   const flatListRef = useRef(null);
 
   useFocusEffect(
@@ -90,6 +94,16 @@ const ProductDetail = ({ route, navigation }) => {
       }
     }, [])
   );
+
+  useEffect(() => {
+    if (route.params?.capacityText) setCapacityText(route.params?.capacityText)
+
+    if (route.params?.colorText) setColorText(route.params?.colorText)
+
+    if (route.params?.productPrice) setProductPrice(route.params?.productPrice)
+
+  }, [route.params?.capacityText, route.params?.colorText, route.params?.productPrice])
+
 
   const handleIncreaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -158,8 +172,8 @@ const ProductDetail = ({ route, navigation }) => {
           />
 
           <View style={styles.priceContainer}>
-            <Text style={styles.originalPrice}>{formatCurrency(product.price)}</Text>
-            <Text style={styles.discountedPrice}>{formatCurrency(product.reducedPrice)}</Text>
+            {!route.params?.productPrice && <Text style={styles.originalPrice}>{formatCurrency(product.price)}</Text>}
+            {route.params?.productPrice ? <Text style={styles.discountedPrice}>{formatCurrency(productPrice)}</Text> : <Text style={styles.discountedPrice}>{formatCurrency(product.reducedPrice)}</Text>}
           </View>
         </View>
 
@@ -176,7 +190,7 @@ const ProductDetail = ({ route, navigation }) => {
           </View>
           <View style={styles.productAttributesTextContainer}>
             <Text>Màu sắc, Dung lượng</Text>
-            <Text style={styles.productAttributesCapacityText}>{`${product.colors.map(item => item.color)[0]}, ${product.capacity}`}</Text>
+            {route.params?.colorText && route.params?.capacityText ? <Text style={styles.productAttributesCapacityText}>{`${colorText}, ${capacityText}`}</Text> : <Text style={styles.productAttributesCapacityText}>{`${product.colors.map(item => item.color)[0]}, ${product.capacity}`}</Text>}
           </View>
           <Text style={styles.productAttributesSelectText}>Chọn</Text>
         </TouchableOpacity>
@@ -248,7 +262,7 @@ const ProductDetail = ({ route, navigation }) => {
         >
           Thêm vào giỏ hàng
         </PrimaryButton>
-      </View>
+      </View> 
     </>
 
   );
