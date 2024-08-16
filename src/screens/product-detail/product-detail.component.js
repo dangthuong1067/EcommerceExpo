@@ -190,7 +190,7 @@ const ProductDetail = ({ route, navigation }) => {
           </View>
           <View style={styles.productAttributesTextContainer}>
             <Text>Màu sắc, Dung lượng</Text>
-            {route.params?.colorText && route.params?.capacityText ? <Text style={styles.productAttributesCapacityText}>{`${colorText}, ${capacityText}`}</Text> : <Text style={styles.productAttributesCapacityText}>{`${product.colors.map(item => item.color)[0]}, ${product.capacity}`}</Text>}
+            {route.params?.colorText && route.params?.capacityText && <Text style={styles.productAttributesCapacityText}>{`${colorText}, ${capacityText}`}</Text>}
           </View>
           <Text style={styles.productAttributesSelectText}>Chọn</Text>
         </TouchableOpacity>
@@ -262,7 +262,7 @@ const ProductDetail = ({ route, navigation }) => {
         >
           Thêm vào giỏ hàng
         </PrimaryButton>
-      </View> 
+      </View>
     </>
 
   );
