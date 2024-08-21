@@ -21,7 +21,8 @@ const Item = ({ item }) => {
           productName: item.name,
           capacities: item.items,
           imageSliders: item.imageSliders,
-          productList: item.items
+          productList: item.items,
+          productId: item.id,
         },
       })}
       style={styles.container}>

@@ -1,28 +1,62 @@
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../components/header/Header.component'
 import PrimaryButton from '../../components/primary-button/primary-button.component';
 import { formatCurrency } from '../../helpers/Utils';
 import styles from './choose-phone-attributes.styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ChoosePhoneAttributes = ({ route, navigation }) => {
-  const { product, productName, capacities, productList } = route.params;
+  const { product, productName, capacities, productList, productId } = route.params;
 
   const [indexSelectedCapacity, setIndexSelectedCapacity] = useState(undefined);
   const [indexSelectedColor, setIndexSelectedColor] = useState(undefined);
   const capacityText = capacities[indexSelectedCapacity]?.capacity
 
   const [colorText, setColorText] = useState(undefined);
-  const productPrice = productList.find(item => item.capacity === capacityText)?.colors.find(item => item.color === colorText).price
+  const productPrice = productList.find(item => item.capacity === capacityText)?.colors.find(item => item.color === colorText)?.price
 
-  const handleSelect = () => {
+  const getColorText = async () => {
+    const color = await AsyncStorage.getItem(`setColor${productId}`);
+    setColorText(color)
+  }
+
+  useEffect(() => {
+    getColorText()
+  }, [])
+
+  const getCapacityText = async () => {
+    const indexSelectedCapacityAsyncStorage = await AsyncStorage.getItem(`indexSelectedCapacity${productId}`);
+    setIndexSelectedCapacity(indexSelectedCapacityAsyncStorage ? Number(indexSelectedCapacityAsyncStorage) : undefined)
+  }
+
+  useEffect(() => {
+    getCapacityText()
+  }, [])
+
+  const getIndexSelectedColor = async () => {
+    const indexSelectedColorAsyncStorage = await AsyncStorage.getItem(`indexSelectedColor${productId}`);
+    setIndexSelectedColor(indexSelectedColorAsyncStorage ? Number(indexSelectedColorAsyncStorage) : undefined)
+  }
+
+  useEffect(() => {
+    getIndexSelectedColor()
+  }, [])
+
+  const handleSelect = async () => {
     if (!colorText) return Alert.alert('Vui lòng chọn màu sắc')
     if (!capacityText) return Alert.alert('Vui lòng chọn dung lượng')
 
+    await AsyncStorage.setItem(`indexSelectedColor${productId}`, JSON.stringify(indexSelectedColor));
+    await AsyncStorage.setItem(`indexSelectedCapacity${productId}`, JSON.stringify(indexSelectedCapacity));
+
+    if (colorText) {
+      await AsyncStorage.setItem(`setColor${productId}`, colorText);
+    }
     navigation.navigate({
       name: 'ProductDetail',
-      params: { 
-        colorText: colorText ,
+      params: {
+        colorText: colorText,
         capacityText: capacityText,
         productPrice: productPrice
       },

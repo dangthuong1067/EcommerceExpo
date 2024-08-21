@@ -22,6 +22,7 @@ import styles from './product-detail.styles';
 import CounterButton from '../../components/counterButton/counter-button.component';
 import Toast, { BaseToast } from 'react-native-toast-message';
 import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const customerList = [
   {
@@ -76,7 +77,7 @@ export const toastConfig = {
   )
 };
 const ProductDetail = ({ route, navigation }) => {
-  const { product, productName, capacities, imageSliders, productList } = route.params;
+  const { product, productName, capacities, imageSliders, productList, productId } = route.params;
   const [quantity, setQuantity] = useState(1);
   const [isShowReview, setIsShowReview] = useState(false);
   const [isShowProductDetail, setIsShowProductDetail] = useState(false);
@@ -182,7 +183,8 @@ const ProductDetail = ({ route, navigation }) => {
             product: product,
             productName: productName,
             capacities: capacities,
-            productList: productList
+            productList: productList,
+            productId: productId
           })}
           style={styles.productAttributesButton}>
           <View style={styles.productAttributesImageContainer}>
