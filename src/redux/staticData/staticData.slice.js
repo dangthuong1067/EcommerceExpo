@@ -8,7 +8,8 @@ const INIT_STATE = {
   banners: [],
   saleProducts: [],
   popularProducts: [],
-  categoriesList: []
+  categoriesList: [],
+  productList: []
 }
 
 const staticSlice = createSlice({
@@ -21,6 +22,7 @@ const staticSlice = createSlice({
           state.saleProducts = action.payload.saleProducts,
           state.popularProducts = action.payload.popularProduct,
           state.categoriesList = action.payload.categories
+          state.productList = action.payload.productList
       })
   }
 })
@@ -46,19 +48,25 @@ export const getStaticDataThunk = createAsyncThunk(
 
     const responseCategoriesList = instanceAuth.get('/home/categories',)
 
-    const responseAll = await Promise.all([responseBanner, responseSaleProducts, responsePoPularProducts, responseCategoriesList])
+    const responseProducts = instanceAuth.get(
+      '/home/products',
+    )
+
+    const responseAll = await Promise.all([responseBanner, responseSaleProducts, responsePoPularProducts, responseCategoriesList, responseProducts])
 
     const processResponseAll = async () => {
       const { data: { banners } } = responseAll[0].data;
       const { data: { products: saleProducts } } = responseAll[1].data;
       const { data: { products: popularProduct } } = responseAll[2].data;
       const { data: { categories } } = responseAll[3].data;
+      const { data: { products: productList } } = responseAll[4].data;
 
       return {
         banners,
         saleProducts,
         popularProduct,
-        categories
+        categories,
+        productList
       }
     }
 

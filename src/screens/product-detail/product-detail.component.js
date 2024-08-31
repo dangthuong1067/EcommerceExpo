@@ -14,7 +14,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Rating } from 'react-native-ratings';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Header from '../../components/header/Header.component';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Carousel from '../../components/carousel/Carousel';
 import { formatCurrency } from '../../helpers/Utils';
 import PrimaryButton from '../../components/primary-button/primary-button.component';
@@ -23,6 +23,7 @@ import CounterButton from '../../components/counterButton/counter-button.compone
 import Toast, { BaseToast } from 'react-native-toast-message';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { addFavoriteList, removeFavoriteProduct } from '../../redux/favorite/favorite.slice';
 
 const customerList = [
   {
@@ -85,8 +86,9 @@ const ProductDetail = ({ route, navigation }) => {
   const [capacityText, setCapacityText] = useState();
   const [colorText, setColorText] = useState();
   const [productPrice, setProductPrice] = useState();
-
   const flatListRef = useRef(null);
+  const favorieList = useSelector(state => state.favorite.favoriteList)
+  const dispatch = useDispatch();
 
   useFocusEffect(
     useCallback(() => {
@@ -115,6 +117,18 @@ const ProductDetail = ({ route, navigation }) => {
       setQuantity(quantity - 1);
     }
   };
+
+  const handleSelectFavorite = () => {
+    dispatch(removeFavoriteProduct(productId))
+  }
+
+  const handleUncheckFavorite = () => {
+    dispatch(addFavoriteList({
+      productId,
+      productPrice: route.params?.productPrice ? productPrice : product.reducedPrice,
+      image: product.image
+    }))
+  }
 
   const renderItemReview = ({ item }) => {
     const nameParts = item.customerName.split(' ');
@@ -150,84 +164,93 @@ const ProductDetail = ({ route, navigation }) => {
     )
   };
 
-  const renderProductDetails = () => (
-    <View>
-      <Carousel
-        data={imageSliders}
-        autoScroll={false}
-        dotStyle={styles.carouselDot}
-        activeDotStyle={styles.carouselActiveDot}
-      />
+  const renderProductDetails = () => {
+    const hasFavoriteProduct = favorieList.find(item => item.id === productId)
+    return (
+      <View>
+        <Carousel
+          data={imageSliders}
+          autoScroll={false}
+          dotStyle={styles.carouselDot}
+          activeDotStyle={styles.carouselActiveDot}
+        />
 
-      <View style={styles.productInfo}>
-        <View style={styles.productNameContainer}>
-          <Text style={styles.productName}>{productName}</Text>
-          <TouchableOpacity >
-            <Icon name="heart-outline" size={24} color="red" />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.quantityContainer}>
-          <CounterButton
-            style={styles.counterButton}
-          />
-
-          <View style={styles.priceContainer}>
-            {!route.params?.productPrice && <Text style={styles.originalPrice}>{formatCurrency(product.price)}</Text>}
-            {route.params?.productPrice ? <Text style={styles.discountedPrice}>{formatCurrency(productPrice)}</Text> : <Text style={styles.discountedPrice}>{formatCurrency(product.reducedPrice)}</Text>}
+        <View style={styles.productInfo}>
+          <View style={styles.productNameContainer}>
+            <Text style={styles.productName}>{productName}</Text>
+            {hasFavoriteProduct ? <TouchableOpacity onPress={handleSelectFavorite}>
+              <Icon name="heart-sharp" size={24} color="red" />
+            </TouchableOpacity> :
+              <TouchableOpacity onPress={handleUncheckFavorite}>
+                <Icon name="heart-outline" size={24} color="red" />
+              </TouchableOpacity>
+            }
           </View>
-        </View>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ChoosePhoneAttributes', {
-            product: product,
-            productName: productName,
-            capacities: capacities,
-            productList: productList,
-            productId: productId
-          })}
-          style={styles.productAttributesButton}>
-          <View style={styles.productAttributesImageContainer}>
-            <Image source={{ uri: product.image }} style={styles.productAttributesImage} />
-          </View>
-          <View style={styles.productAttributesTextContainer}>
-            <Text>Màu sắc, Dung lượng</Text>
-            {route.params?.colorText && route.params?.capacityText && <Text style={styles.productAttributesCapacityText}>{`${colorText}, ${capacityText}`}</Text>}
-          </View>
-          <Text style={styles.productAttributesSelectText}>Chọn</Text>
-        </TouchableOpacity>
+          <View style={styles.quantityContainer}>
+            <CounterButton
+              style={styles.counterButton}
+            />
 
-        <View style={styles.productDetailsSection}>
-          <Text style={styles.textProductDetails}>Chi tiết sản phẩm</Text>
-          <TouchableOpacity onPress={() => setIsShowProductDetail(!isShowProductDetail)}>
-            {isShowProductDetail ? <Icon name="chevron-down" size={24} color="gray" /> : <Icon name="chevron-forward-outline" size={24} color="gray" />}
-          </TouchableOpacity>
-        </View>
-
-        <View>
-          <View style={styles.customerReviewsSection}>
-            <Text style={styles.textProductDetails}>Đánh giá của khách hàng</Text>
-            <Text>4.5/5</Text>
-            <View style={styles.ratingMargin}>
-              <Rating
-                type="custom"
-                ratingCount={5}
-                imageSize={20}
-                startingValue={1}
-                readonly
-                style={styles.rating}
-              />
+            <View style={styles.priceContainer}>
+              {!route.params?.productPrice && <Text style={styles.originalPrice}>{formatCurrency(product.price)}</Text>}
+              {route.params?.productPrice ? <Text style={styles.discountedPrice}>{formatCurrency(productPrice)}</Text> : <Text style={styles.discountedPrice}>{formatCurrency(product.reducedPrice)}</Text>}
             </View>
-            <TouchableOpacity onPress={() => setIsShowReview(!isShowReview)}>
-              {isShowReview ? <Icon name="chevron-down" size={24} color="gray" /> : <Icon name="chevron-forward-outline" size={24} color="gray" />}
+          </View>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ChoosePhoneAttributes', {
+              product: product,
+              productName: productName,
+              capacities: capacities,
+              productList: productList,
+              productId: productId
+            })}
+            style={styles.productAttributesButton}>
+            <View style={styles.productAttributesImageContainer}>
+              <Image source={{ uri: product.image }} style={styles.productAttributesImage} />
+            </View>
+            <View style={styles.productAttributesTextContainer}>
+              <Text>Màu sắc, Dung lượng</Text>
+              {route.params?.colorText && route.params?.capacityText && <Text style={styles.productAttributesCapacityText}>{`${colorText}, ${capacityText}`}</Text>}
+            </View>
+            <Text style={styles.productAttributesSelectText}>Chọn</Text>
+          </TouchableOpacity>
+
+          <View style={styles.productDetailsSection}>
+            <Text style={styles.textProductDetails}>Chi tiết sản phẩm</Text>
+            <TouchableOpacity onPress={() => setIsShowProductDetail(!isShowProductDetail)}>
+              {isShowProductDetail ? <Icon name="chevron-down" size={24} color="gray" /> : <Icon name="chevron-forward-outline" size={24} color="gray" />}
             </TouchableOpacity>
           </View>
 
+          <View>
+            <View style={styles.customerReviewsSection}>
+              <Text style={styles.textProductDetails}>Đánh giá của khách hàng</Text>
+              <Text>4.5/5</Text>
+              <View style={styles.ratingMargin}>
+                <Rating
+                  type="custom"
+                  ratingCount={5}
+                  imageSize={20}
+                  startingValue={1}
+                  readonly
+                  style={styles.rating}
+                />
+              </View>
+              <TouchableOpacity onPress={() => setIsShowReview(!isShowReview)}>
+                {isShowReview ? <Icon name="chevron-down" size={24} color="gray" /> : <Icon name="chevron-forward-outline" size={24} color="gray" />}
+              </TouchableOpacity>
+            </View>
 
+
+          </View>
         </View>
       </View>
-    </View>
-  )
+    )
+  }
+
+
 
   const addToCart = () => {
     Toast.show({
