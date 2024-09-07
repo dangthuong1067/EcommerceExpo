@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import request from '../../helpers/request'
+import { instance, instanceAuth } from '../../helpers/api'
 const INIT_STATE = {
     status: 'loading',
     //loading: true,
@@ -126,6 +127,23 @@ export const updateProductThunk = createAsyncThunk(
 )
 
 
+export const updateLoveProductListThunk = createAsyncThunk(
+  'products/updateLoveProductListThunk',
+  async (data) => {
+    const { userId, productId } = data;
+    try {
+      const response = await instanceAuth.post(
+        '/products/updateLoveProductList',
+        {
+          userId,
+          productId
+        }
+      );
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+)
 
 export const {
     setList,

@@ -24,6 +24,7 @@ import Toast, { BaseToast } from 'react-native-toast-message';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addFavoriteList, removeFavoriteProduct } from '../../redux/favorite/favorite.slice';
+import { updateLoveProductListThunk } from '../../redux/products/products.slice';
 
 const customerList = [
   {
@@ -117,9 +118,14 @@ const ProductDetail = ({ route, navigation }) => {
       setQuantity(quantity - 1);
     }
   };
+  const dispatchToUpdateLoveProductList = async () => {
+    const userId = await AsyncStorage.getItem('userId')
+    dispatch(updateLoveProductListThunk({ productId, userId }))
+  }
 
   const handleSelectFavorite = () => {
     dispatch(removeFavoriteProduct(productId))
+    dispatchToUpdateLoveProductList()
   }
 
   const handleUncheckFavorite = () => {
@@ -128,6 +134,7 @@ const ProductDetail = ({ route, navigation }) => {
       productPrice: route.params?.productPrice ? productPrice : product.reducedPrice,
       image: product.image
     }))
+    dispatchToUpdateLoveProductList()
   }
 
   const renderItemReview = ({ item }) => {

@@ -47,9 +47,9 @@ export const loginThunk = createAsyncThunk(
       }
     );
 
-    const { data: { token } } = response.data;
-
+    const { data: { token, user } } = response.data;
     await AsyncStorage.setItem('token', token);
+    await AsyncStorage.setItem('userId', JSON.stringify(user.id))
     return token
   }
 )
@@ -75,6 +75,7 @@ export const logoutThunk = createAsyncThunk(
   'auth/logoutThunk',
   async () => {
     await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('userId');
   }
 )
 export default authSlice.reducer
