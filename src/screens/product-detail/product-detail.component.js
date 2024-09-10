@@ -119,8 +119,7 @@ const ProductDetail = ({ route, navigation }) => {
     }
   };
   const dispatchToUpdateLoveProductList = async () => {
-    const userId = await AsyncStorage.getItem('userId')
-    dispatch(updateLoveProductListThunk({ productId, userId }))
+    dispatch(updateLoveProductListThunk({ productId }))
   }
 
   const handleSelectFavorite = () => {

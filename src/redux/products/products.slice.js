@@ -130,12 +130,11 @@ export const updateProductThunk = createAsyncThunk(
 export const updateLoveProductListThunk = createAsyncThunk(
   'products/updateLoveProductListThunk',
   async (data) => {
-    const { userId, productId } = data;
+    const { productId } = data;
     try {
       const response = await instanceAuth.post(
         '/products/updateLoveProductList',
         {
-          userId,
           productId
         }
       );
