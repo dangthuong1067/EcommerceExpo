@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ChoosePhoneAttributes = ({ route, navigation }) => {
   const { product, productName, capacities, productList, productId } = route.params;
   //Test revert task
+  //Test revert task1
   const [indexSelectedCapacity, setIndexSelectedCapacity] = useState(undefined);
   const [indexSelectedColor, setIndexSelectedColor] = useState(undefined);
   const capacityText = capacities[indexSelectedCapacity]?.capacity
