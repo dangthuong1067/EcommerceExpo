@@ -1,9 +1,12 @@
-import { View, FlatList} from 'react-native'
-import React, { useState } from 'react'
+import { View, FlatList } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
 import styles from './cart.styles'
 import Header from '../../components/header/Header.component'
 import PrimaryButton from '../../components/primary-button/primary-button.component'
 import CartItem from './cartItem/cart-item.component'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCartListThunk } from '../../redux/cart/cart.slice'
+import { useFocusEffect } from '@react-navigation/native';
 
 const cartItems = [
   {
@@ -21,6 +24,24 @@ const cartItems = [
 ]
 
 const Cart = () => {
+  const { cartList } = useSelector(state => state.cart)
+
+  const dispatch = useDispatch()
+  const cartItems = cartList?.map(item => {
+    return {
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      image: item.image,
+    };
+  }) || [];
+
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getCartListThunk());
+    }, [])
+  );
   return (
     <>
       <Header
@@ -33,7 +54,7 @@ const Cart = () => {
           keyExtractor={(item) => item.id.toString()}
         />
       </View>
-      
+
       <PrimaryButton
         style={styles.primaryButton}
         isCartScreen={true}

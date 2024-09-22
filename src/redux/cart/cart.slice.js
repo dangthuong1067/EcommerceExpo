@@ -1,53 +1,86 @@
-import { createSlice } from "@reduxjs/toolkit/dist"
+import {
+  createSlice,
+  createAsyncThunk
+} from '@reduxjs/toolkit'
+import { instanceAuth } from '../../helpers/api'
 
 const INIT_STATE = {
-    loading: true,
-    list: []
+  loading: true,
+  cartList: [],
+  quantity: 1
 }
-// const cartReducer = (state = INIT_STATE, action) => {
-//     switch (action.type) {
-//         case 'cart/add':
-//             return {
-//                 ...state,
-//                 list: [...state.list, action.payload]
-//             }
-//         case 'cart/remove':
-//             return {
-//                 ...state,
-//                 list: state.list.filter(item => item.id !== action.payload)
-//             }
-//         default:
-//             return state
-//     }
-// }
-
-// export const addCart = (product) => ({
-//     type: 'cart/add',
-//     payload: product
-// })
-
-// export const removeCart = (id) => ({
-//     type: 'cart/remove',
-//     payload: id
-// })
-
 
 const cartSlice = createSlice({
-    name: 'cart',
-    initialState: INIT_STATE,
-    reducers: {
-        addCart(state, action) {
-            state.list.push(action.payload)
-        },
-        removeCart(state, action) {
-            state.list = state.list.filter(item => item.id !== action.payload)
-        },
+  name: 'cart',
+  initialState: INIT_STATE,
+  reducers: {
+    updateQuantity(state, action) {
+      state.quantity = action.payload
     },
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(getCartListThunk.fulfilled, (state, action) => {
+        state.cartList = action.payload
+      })
+  }
 
 })
 
+export const addCartThunk = createAsyncThunk(
+  'cart/addCartThunk',
+  async (data, thunkAPI) => {
+    const { productId } = data;
+    const state = thunkAPI.getState();
+    const quantity = state.cart.quantity;
+
+    try {
+      const response = await instanceAuth.post(
+        '/cart/addCart',
+        {
+          productId,
+          quantity
+        }
+      );
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+)
+
+export const getCartListThunk = createAsyncThunk(
+  'cart/getCartListThunk',
+  async (data, thunkAPI) => {
+    try {
+      const res = await instanceAuth.get('/cart/cartList');
+      return res.data.data.cartList
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+)
+
+export const removeCartThunk = createAsyncThunk(
+  'cart/addCartThunk',
+  async (data, thunkAPI) => {
+    const { productId } = data;
+
+    try {
+      const response = await instanceAuth.post(
+        '/cart/removeCart',
+        {
+          productId,
+        }
+      );
+
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+)
+
 export const {
-    addCart, removeCart
+  updateQuantity
 } = cartSlice.actions
 
 export default cartSlice.reducer;

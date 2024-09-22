@@ -6,6 +6,7 @@ import staticSlice from "./staticData/staticData.slice";
 import appReducer from "./app/app.slice";
 import categoriesReducer from './categories/categories.slice';
 import favoriteReducer from './favorite/favorite.slice';
+import cartReducer from './cart/cart.slice';
 
 const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ const store = configureStore({
     staticData: staticSlice,
     app: appReducer,
     categories: categoriesReducer,
-    favorite: favoriteReducer
+    favorite: favoriteReducer,
+    cart: cartReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

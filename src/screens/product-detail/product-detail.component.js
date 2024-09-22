@@ -25,6 +25,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addFavoriteList, removeFavoriteProduct } from '../../redux/favorite/favorite.slice';
 import { updateLoveProductListThunk } from '../../redux/products/products.slice';
+import { addCartThunk, updateQuantity } from '../../redux/cart/cart.slice';
 
 const customerList = [
   {
@@ -259,11 +260,15 @@ const ProductDetail = ({ route, navigation }) => {
 
 
   const addToCart = () => {
+    dispatch(addCartThunk({
+      productId
+    }))
     Toast.show({
       type: 'success',
       text1: 'Thành công',
       text2: 'Sản phẩm đã được thêm vào giỏ hàng',
     });
+    dispatch(updateQuantity(1))
   }
   return (
     <>

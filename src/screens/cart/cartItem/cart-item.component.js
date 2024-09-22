@@ -4,8 +4,15 @@ import styles from './cart-item.styles'
 import CounterButton from '../../../components/counterButton/counter-button.component'
 import CheckBox from '../../../components/checkbox/checkbox.component'
 import { formatCurrency } from '../../../helpers/Utils'
+import { useDispatch } from 'react-redux'
+import { removeCartThunk } from '../../../redux/cart/cart.slice'
 
 const CartItem = ({ item }) => {
+  const dispatch = useDispatch()
+
+  const removeProductInCart = () => {
+    dispatch(removeCartThunk({ productId: item.id }))
+  }
   return (
     <View style={styles.item}>
       <Image source={{ uri: item.image }} style={styles.image} />
@@ -17,7 +24,9 @@ const CartItem = ({ item }) => {
       </View>
 
       <View style={styles.contentRight}>
-        <TouchableOpacity style={styles.xMark}>
+        <TouchableOpacity
+          onPress={removeProductInCart}
+          style={styles.xMark}>
           <Text style={styles.remove}>X</Text>
         </TouchableOpacity>
         <Text>{formatCurrency(200000)}</Text>
