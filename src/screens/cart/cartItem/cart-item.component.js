@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './cart-item.styles'
 import CounterButton from '../../../components/counterButton/counter-button.component'
 import CheckBox from '../../../components/checkbox/checkbox.component'
@@ -9,9 +9,17 @@ import { removeCartThunk } from '../../../redux/cart/cart.slice'
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch()
-
+  const [quantity, setQuantity] = useState(item.quantity)
   const removeProductInCart = () => {
     dispatch(removeCartThunk({ productId: item.id }))
+  }
+
+  const handleDecreaseQuantity = () => {
+    setQuantity(quantity - 1)
+  }
+
+  const handleIncreaseQuantity = () => {
+    setQuantity(quantity + 1)
   }
   return (
     <View style={styles.item}>
@@ -19,6 +27,9 @@ const CartItem = ({ item }) => {
       <View style={styles.info}>
         <Text style={styles.name}>{item.name}</Text>
         <CounterButton
+          handleDecreaseQuantity={handleDecreaseQuantity}
+          handleIncreaseQuantity={handleIncreaseQuantity}
+          quantity={quantity}
           style={styles.counterButton}
         />
       </View>

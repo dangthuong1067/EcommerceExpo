@@ -7,7 +7,6 @@ import { instanceAuth } from '../../helpers/api'
 const INIT_STATE = {
   loading: true,
   cartList: [],
-  quantity: 1
 }
 
 const cartSlice = createSlice({
@@ -20,8 +19,13 @@ const cartSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(getCartListThunk.fulfilled, (state, action) => {
-        state.cartList = action.payload
+      .addCase(addCartThunk.fulfilled, (state, action) => {
+        const productFound = state.cartList.find(item => item.id === action.payload.id)
+        if (productFound) {
+          productFound.quantity = action.payload.quantity
+        } else {
+          state.cartList = [...state.cartList, action.payload]
+        }
       })
   }
 
@@ -30,18 +34,19 @@ const cartSlice = createSlice({
 export const addCartThunk = createAsyncThunk(
   'cart/addCartThunk',
   async (data, thunkAPI) => {
-    const { productId } = data;
-    const state = thunkAPI.getState();
-    const quantity = state.cart.quantity;
+    const { productId, quantity, image } = data;
 
     try {
       const response = await instanceAuth.post(
         '/cart/addCart',
         {
           productId,
-          quantity
+          quantity,
+          image
         }
       );
+
+      return response.data.product
     } catch (error) {
       console.log('error', error);
     }

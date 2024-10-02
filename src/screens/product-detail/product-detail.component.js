@@ -196,6 +196,9 @@ const ProductDetail = ({ route, navigation }) => {
 
           <View style={styles.quantityContainer}>
             <CounterButton
+              handleDecreaseQuantity={handleDecreaseQuantity}
+              handleIncreaseQuantity={handleIncreaseQuantity}
+              quantity={quantity}
               style={styles.counterButton}
             />
 
@@ -261,7 +264,9 @@ const ProductDetail = ({ route, navigation }) => {
 
   const addToCart = () => {
     dispatch(addCartThunk({
-      productId
+      productId,
+      quantity,
+      image: product.image
     }))
     Toast.show({
       type: 'success',
@@ -269,6 +274,7 @@ const ProductDetail = ({ route, navigation }) => {
       text2: 'Sản phẩm đã được thêm vào giỏ hàng',
     });
     dispatch(updateQuantity(1))
+    setQuantity(1)
   }
   return (
     <>

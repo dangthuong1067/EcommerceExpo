@@ -5,8 +5,6 @@ import Header from '../../components/header/Header.component'
 import PrimaryButton from '../../components/primary-button/primary-button.component'
 import CartItem from './cartItem/cart-item.component'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCartListThunk } from '../../redux/cart/cart.slice'
-import { useFocusEffect } from '@react-navigation/native';
 
 const cartItems = [
   {
@@ -33,15 +31,10 @@ const Cart = () => {
       name: item.name,
       price: item.price,
       image: item.image,
+      quantity:item.quantity
     };
   }) || [];
 
-
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(getCartListThunk());
-    }, [])
-  );
   return (
     <>
       <Header
