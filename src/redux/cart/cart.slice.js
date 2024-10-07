@@ -53,18 +53,6 @@ export const addCartThunk = createAsyncThunk(
   }
 )
 
-export const getCartListThunk = createAsyncThunk(
-  'cart/getCartListThunk',
-  async (data, thunkAPI) => {
-    try {
-      const res = await instanceAuth.get('/cart/cartList');
-      return res.data.data.cartList
-    } catch (error) {
-      console.log('error', error);
-    }
-  }
-)
-
 export const removeCartThunk = createAsyncThunk(
   'cart/addCartThunk',
   async (data, thunkAPI) => {
