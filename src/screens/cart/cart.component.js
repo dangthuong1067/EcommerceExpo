@@ -31,7 +31,10 @@ const Cart = () => {
       name: item.name,
       price: item.price,
       image: item.image,
-      quantity:item.quantity
+      quantity: item.quantity,
+      capacity: item.capacity,
+      color: item.color,
+      price: item.price
     };
   }) || [];
 

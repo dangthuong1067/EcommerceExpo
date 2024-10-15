@@ -25,7 +25,7 @@ const CartItem = ({ item }) => {
     <View style={styles.item}>
       <Image source={{ uri: item.image }} style={styles.image} />
       <View style={styles.info}>
-        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.name}>{`${item.name} (${item.capacity}) ${item.color}`}</Text>
         <CounterButton
           handleDecreaseQuantity={handleDecreaseQuantity}
           handleIncreaseQuantity={handleIncreaseQuantity}
@@ -40,8 +40,7 @@ const CartItem = ({ item }) => {
           style={styles.xMark}>
           <Text style={styles.remove}>X</Text>
         </TouchableOpacity>
-        <Text>{formatCurrency(200000)}</Text>
-        <Text style={styles.cost}>{formatCurrency(500000)}</Text>
+        <Text>{formatCurrency(item.price)}</Text>
 
         <CheckBox
         />

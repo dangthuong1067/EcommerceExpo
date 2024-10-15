@@ -34,7 +34,7 @@ const cartSlice = createSlice({
 export const addCartThunk = createAsyncThunk(
   'cart/addCartThunk',
   async (data, thunkAPI) => {
-    const { productId, quantity, image } = data;
+    const { productId, quantity, image, capacity, color, price } = data;
 
     try {
       const response = await instanceAuth.post(
@@ -42,7 +42,10 @@ export const addCartThunk = createAsyncThunk(
         {
           productId,
           quantity,
-          image
+          image,
+          capacity,
+          color,
+          price
         }
       );
 

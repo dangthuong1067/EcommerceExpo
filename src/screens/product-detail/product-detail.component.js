@@ -7,7 +7,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
-  FlatList
+  FlatList,
+  Alert
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -263,10 +264,16 @@ const ProductDetail = ({ route, navigation }) => {
 
 
   const addToCart = () => {
+    if (!route.params?.colorText || !route.params?.capacityText) {
+      return Alert.alert('Bạn chưa chọn màu sắc/dung lượng sản phẩm');
+    }
     dispatch(addCartThunk({
       productId,
       quantity,
-      image: product.image
+      image: product.image,
+      capacity: capacityText,
+      color: colorText,
+      price: productPrice
     }))
     Toast.show({
       type: 'success',
