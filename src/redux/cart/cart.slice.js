@@ -27,6 +27,9 @@ const cartSlice = createSlice({
           state.cartList = [...state.cartList, action.payload]
         }
       })
+      .addCase(getCartListThunk.fulfilled, (state, action) => {
+        state.cartList = action.payload
+      })
   }
 
 })
@@ -69,6 +72,18 @@ export const removeCartThunk = createAsyncThunk(
         }
       );
 
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+)
+
+export const getCartListThunk = createAsyncThunk(
+  'cart/getCartListThunk',
+  async () => {
+    try {
+      const response = await instanceAuth.get('/cart/getCartList');
+      return response.data.cartList
     } catch (error) {
       console.log('error', error);
     }

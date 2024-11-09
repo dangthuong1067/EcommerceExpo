@@ -287,6 +287,7 @@ const ProductDetail = ({ route, navigation }) => {
     <>
       <Header
         title={'Chi tiết sản phẩm'}
+        setQuantity={setQuantity}
       />
       <FlatList
         data={customerList}

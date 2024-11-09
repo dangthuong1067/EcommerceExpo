@@ -5,6 +5,7 @@ import Header from '../../components/header/Header.component'
 import PrimaryButton from '../../components/primary-button/primary-button.component'
 import CartItem from './cartItem/cart-item.component'
 import { useDispatch, useSelector } from 'react-redux'
+import { getCartListThunk } from '../../redux/cart/cart.slice'
 
 const cartItems = [
   {
@@ -38,6 +39,10 @@ const Cart = () => {
     };
   }) || [];
 
+  useEffect(() => {
+    if (cartItems.length === 0) dispatch(getCartListThunk())
+  }, [])
+  
   return (
     <>
       <Header

@@ -4,13 +4,16 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const Header = ({ title }) => {
+const Header = ({ title, setQuantity }) => {
   const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.headerContainer}>
       <TouchableOpacity
-        onPress={() => navigation.goBack()}
+        onPress={() => {
+          navigation.goBack()
+          setQuantity && setQuantity(1)
+        }}
         style={styles.backButton}
         hitSlop={50}
       >
