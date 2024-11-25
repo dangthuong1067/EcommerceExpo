@@ -7,6 +7,7 @@ import { instanceAuth } from '../../helpers/api'
 const INIT_STATE = {
   loading: true,
   cartList: [],
+  totalPrice: 0
 }
 
 const cartSlice = createSlice({
@@ -14,6 +15,16 @@ const cartSlice = createSlice({
   initialState: INIT_STATE,
   reducers: {
     updateQuantity(state, action) {
+      state.quantity = action.payload
+    },
+    calculateTotal(state, action) {
+      if (action.payload.isIncrease || action.payload.checked) {
+        state.totalPrice += action.payload.productPriceTotal
+      } else if (action.payload.isDecrease || !action.payload.checked) {
+        state.totalPrice -= action.payload.productPriceTotal
+      }
+    },
+    removeProduct(state, action) {
       state.quantity = action.payload
     },
   },
@@ -28,6 +39,12 @@ const cartSlice = createSlice({
         }
       })
       .addCase(getCartListThunk.fulfilled, (state, action) => {
+        state.cartList = action.payload
+      })
+      .addCase(removeCartThunk.fulfilled, (state, action) => {
+        state.cartList = state.cartList.filter(item => item.id != action.payload.id)
+      })
+      .addCase(saveCheckStatusThunk.fulfilled, (state, action) => {
         state.cartList = action.payload
       })
   }
@@ -59,8 +76,32 @@ export const addCartThunk = createAsyncThunk(
   }
 )
 
+
+export const saveCheckStatusThunk = createAsyncThunk(
+  'cart/saveCheckStatusThunk',
+  async (data, thunkAPI) => {
+    const { productId, checkStatus } = data;
+
+    try {
+      const response = await instanceAuth.post(
+        '/cart/saveCheckStatus',
+        {
+          productId,
+          checkStatus,
+        }
+      );
+
+      return response.data.cartList
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+)
+
+
+
 export const removeCartThunk = createAsyncThunk(
-  'cart/addCartThunk',
+  'cart/removeCartThunk',
   async (data, thunkAPI) => {
     const { productId } = data;
 
@@ -72,6 +113,7 @@ export const removeCartThunk = createAsyncThunk(
         }
       );
 
+      return response.data.product
     } catch (error) {
       console.log('error', error);
     }
@@ -91,7 +133,8 @@ export const getCartListThunk = createAsyncThunk(
 )
 
 export const {
-  updateQuantity
+  updateQuantity,
+  calculateTotal
 } = cartSlice.actions
 
 export default cartSlice.reducer;

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     borderRadius: 31,
   },
   quantity: {
-    color: 'white', fontWeight: 'bold', fontSize: 18
+    color: 'white', fontWeight: 'bold', fontSize: 18, marginRight: 20
   },
   totalPrice: {
     position: 'absolute',

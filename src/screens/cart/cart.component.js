@@ -35,9 +35,12 @@ const Cart = () => {
       quantity: item.quantity,
       capacity: item.capacity,
       color: item.color,
-      price: item.price
+      price: item.price,
+      check: item.check 
     };
   }) || [];
+
+  const totalCheckedProducts = cartList.filter((item) => item.check === true).length;
 
   useEffect(() => {
     if (cartItems.length === 0) dispatch(getCartListThunk())
@@ -59,6 +62,7 @@ const Cart = () => {
       <PrimaryButton
         style={styles.primaryButton}
         isCartScreen={true}
+        totalCheckedProducts={totalCheckedProducts}
       >
         Thanh toán
       </PrimaryButton>
