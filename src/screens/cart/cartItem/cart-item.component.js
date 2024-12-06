@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, Alert } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import styles from './cart-item.styles'
 import CounterButton from '../../../components/counterButton/counter-button.component'
 import CheckBox from '../../../components/checkbox/checkbox.component'
@@ -93,4 +93,8 @@ const CartItem = ({ item }) => {
   )
 }
 
-export default CartItem
+const isMemo = (prveProps, nextProps) => {
+  return prveProps.item.check === nextProps.item.check
+}
+
+export default memo(CartItem, isMemo);

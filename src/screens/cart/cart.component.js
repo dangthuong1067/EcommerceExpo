@@ -23,7 +23,7 @@ const cartItems = [
 ]
 
 const Cart = () => {
-  const { cartList } = useSelector(state => state.cart)
+  const cartList = useSelector(state => state.cart.cartList)
 
   const dispatch = useDispatch()
   const cartItems = cartList?.map(item => {
