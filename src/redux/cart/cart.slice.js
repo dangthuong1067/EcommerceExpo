@@ -47,6 +47,9 @@ const cartSlice = createSlice({
       .addCase(saveCheckStatusThunk.fulfilled, (state, action) => {
         state.cartList = action.payload
       })
+      .addCase(saveQuantityThunk.fulfilled, (state, action) => {
+        state.cartList = action.payload
+      })
   }
 
 })
@@ -99,6 +102,26 @@ export const saveCheckStatusThunk = createAsyncThunk(
 )
 
 
+export const saveQuantityThunk = createAsyncThunk(
+  'cart/saveQuantityThunk',
+  async (data, thunkAPI) => {
+    const { productId, quantity } = data;
+
+    try {
+      const response = await instanceAuth.post(
+        '/cart/saveQuantity',
+        {
+          productId,
+          quantity,
+        }
+      );
+
+      return response.data.cartList;
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+)
 
 export const removeCartThunk = createAsyncThunk(
   'cart/removeCartThunk',

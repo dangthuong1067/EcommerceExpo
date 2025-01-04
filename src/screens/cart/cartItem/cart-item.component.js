@@ -5,7 +5,7 @@ import CounterButton from '../../../components/counterButton/counter-button.comp
 import CheckBox from '../../../components/checkbox/checkbox.component'
 import { formatCurrency } from '../../../helpers/Utils'
 import { useDispatch } from 'react-redux'
-import { calculateTotal, removeCartThunk, saveCheckStatusThunk } from '../../../redux/cart/cart.slice'
+import { calculateTotal, removeCartThunk, saveCheckStatusThunk, saveQuantityThunk } from '../../../redux/cart/cart.slice'
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch()
@@ -41,6 +41,7 @@ const CartItem = ({ item }) => {
       }
 
       if (newQuantity < 1) return 1
+      dispatch(saveQuantityThunk({ productId: item.id, quantity: newQuantity }))
       return newQuantity
     })
   }
@@ -53,6 +54,7 @@ const CartItem = ({ item }) => {
         dispatch(calculateTotal({ productPriceTotal: item.price * 1, isIncrease: true, }))
       }
 
+      dispatch(saveQuantityThunk({ productId: item.id, quantity: newQuantity }))
       return newQuantity
     })
   }
