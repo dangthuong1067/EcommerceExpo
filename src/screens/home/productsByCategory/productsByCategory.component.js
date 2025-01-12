@@ -32,6 +32,7 @@ const ProductsByCategory = () => {
     flatListRef.current.scrollToOffset({ offset: 0 });
   }
 
+  console.log('ok');
   return (
     <>
       <View style={styles.preferentialProducts}>
