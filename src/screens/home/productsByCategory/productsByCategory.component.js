@@ -33,6 +33,7 @@ const ProductsByCategory = () => {
   }
 
   console.log('ok');
+  console.log('commit nhánh test');
   return (
     <>
       <View style={styles.preferentialProducts}>
