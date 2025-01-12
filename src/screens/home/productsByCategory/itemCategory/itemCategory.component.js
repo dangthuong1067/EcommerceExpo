@@ -8,6 +8,7 @@ const ItemCategory = ({
   index,
   filterWithCategory
 }) => {
+   //console.log('re-render ItemCategory')
   return (
     <TouchableOpacity
       onPress={() => filterWithCategory(item.id)}
@@ -19,6 +20,8 @@ const ItemCategory = ({
 }
 
 const isMemo = (prveProps, nextProps) => {
+  console.log('prveProps nextProps item cate',prveProps,nextProps)
+  console.log();
   if (prveProps.item === nextProps.item) return true;
   else return false;
 }
