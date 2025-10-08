@@ -172,6 +172,8 @@ const ProductDetail = ({ route, navigation }) => {
     )
   };
 
+  //OK nha
+
   const renderProductDetails = () => {
     const hasFavoriteProduct = favorieList.find(item => item.id === productId)
     return (
